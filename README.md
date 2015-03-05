@@ -123,5 +123,38 @@ yum install setroubleshoot-server -y
 sealert -a /var/log/audit/audit.log
 ```
 
+###Yum
+Summary of Commands:
+```bash
+#List installed and available packges by name
+yum list 
+
+#List installed and available groups
+yum grouplist
+
+#Search for a package by keyword
+yum search <Keyword>
+
+#Show details of a package
+yum info <package-name>
+
+#install a package
+yum install <package-name>
+
+#install a package group
+yum install <package-group>
+
+#Update all packages
+yum update
+
+#Remove a package
+yum remove <package-name>
+
+#Display transaction history
+yum history
+
+#Enalbing thrid party software repositories
+yum-config-manager --add-repo="repo-name"
+
 
 
