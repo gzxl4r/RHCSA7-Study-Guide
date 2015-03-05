@@ -69,3 +69,59 @@ setfacl -b <file>
 ```
 
 ###SELinux
+
+####SELinux Modes
+
+1. Enforcing - SELinux both logs and protects 
+
+2. Permissive - Allows all actions, logs interactions it would have denied in enforcing mode
+
+3. disabled - completely disables SELinux
+
+4. Commands
+
+```bash
+getenforce
+```
+
+```bash
+setsebool -a
+```
+
+```bash
+setenforce <Enforcing|Permissive| 1 | 0 >
+```
+
+#####Changing the default SELinux mode
+
+* /etc/selinux/config
+
+#####Changing the SELinux Contexts
+
+* man -k '_selinux' to checkout selinux booleans
+
+```bash
+chcon -t <type_t> <file>
+```
+
+```bash
+restorecon -v <directory>
+```
+
+Change the default context rule of a direcotry and everything in the directory
+
+```bash
+semanage fcontext -a -t <context_type> '<dirctory>(/.*)?'
+```
+
+#####Troubleshooting SeLinux
+THe most common SELInux issues is an incorrect file context. This can occur when a file is created in a location with one file context and moved into a place where a different context is expected. In most cases, running restorecon will correct the issue.
+
+Product reports for all incidents in that file. 
+```bash
+yum install setroubleshoot-server -y
+sealert -a /var/log/audit/audit.log
+```
+
+
+
