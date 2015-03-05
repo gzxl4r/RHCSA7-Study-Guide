@@ -157,4 +157,27 @@ yum history
 yum-config-manager --add-repo="repo-name"
 
 
+###GPT Partitions
+
+* Use gdisk <device name> instead of fdisk
+
+###Mounting file systems
+```bash
+mount /dev/vdb1 /mnt
+```
+
+Persistently mounting file systmes
+/etc/fstab
+```shell
+UUID=<UUID>	<mount-target> <file-system-type> <mount-options> <dump-flag> <fsck-order>
+```
+User the blkid to determine the UUID of a block device
+```bash
+blkid /dev/vdb1
+```
+
+
+
+
+
 
