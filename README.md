@@ -176,6 +176,44 @@ User the blkid to determine the UUID of a block device
 blkid /dev/vdb1
 ```
 
+###Activating Swap space
+```bash
+mkswap <device>
+swapon <device>
+```
+####Persistantly Activating swap space
+/etc/fstab
+```shell
+UUID=<device-uuid> swap swap defaults 0 0
+```
+###Boot Process
+
+1. The machine is powered on. The system firmware (either modern UEFI or more old fashioned BIOS) runs a POST, and starts to initialize some of the hardware. 
+
+2. The system firware searches for a bootable device, either configured in the UEFI boot firmware or by searching for a Master boot record(MBR) on all disks, in the order configured in the BIOS. 
+
+3. The system fimware reads a boot loader from disk, then passes control of the system to the boot loader.
+
+4. The boot loader loads its configuration from disk, and presents the user with a menu of possible configurations to boot. 
+
+5. After the user has made a choice (or an automatic timeout has happend), the boot loader loads the configured kernel and initramfs from disk and places them in memory. An initframfs is a gzip-ed cpio archive containing kernel modules for all hardware necessary at boot, init scripts, and more. 
+
+6. The boot loader hands control of the system over to the kernel, passing in any options specified on the kernel command line in the boot loader, and the location of the initramfs in memeory. 
+
+7. The kernel initializes all hardware for which it can find a driver in the initramfs, then executes /sbin/init from the initramfs as PID 1. on RHEL7, the initramfs contains a working copy of systemd as /sbin/init, as well as a udev daemon. 
+
+8. THe systemd instance from the initramfs executes all units from the initrd.target target. This includes mounting the actual root file system on /sysroot
+
+9. THe kernel root file system is switched (pivoted) from the initramfs root file system to the system root file system that was previously mounted on /sysroot. systemd then re-executes itself using the copy of systemd installed on the system.
+
+10. systemd looks for a default target, either passed in the kernel command line or configured on the system, then starts (and stops) units to comply with the configuration for that target, solving dependencies between units automatically. In its essence, a systemd target is a set of units that should be activated to reach a desired system state. These targets will typically include at least a text-based login or a graphical login screen being spawned.
+
+###Troubleshooting ports and services
+```bash
+ss -ta
+-t = show tcp packets
+-a = show all(listening and established)
+```
 
 
 
