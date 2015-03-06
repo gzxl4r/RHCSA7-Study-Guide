@@ -215,7 +215,70 @@ ss -ta
 -a = show all(listening and established)
 ```
 
+###System Log Architecture
 
+* systemd-journald
+
+* rsyslogd
+
+####Reviewing systemd Journal Entries
+```bash
+journalctl
+journalctl -n 5
+journalctl --since today
+journalctl --since "2014-03-10 20:30:00" --until "2014-02-13 12:00:00"
+```
+
+###Perserving the systemd Journal
+The systemd journal can be made persistent by creating the directory /var/log/journal as user root. 
+
+
+###Mounting Network Storage with NFS
+
+* /etc/krb5.keytab must be present for NFS exports using kerberos
+
+* enable and start nfs-secure
+
+* fstab for nfs mounts
+```shell
+serverx:/share /mountpoint nfs sync 0 0
+```
+
+###Automounting Network Storage with NFS
+
+* install autofs package
+
+
+```shell
+yum install autofs
+```
+
+* Add a master-map file to /etc/auto.master.d. Must have an extenstion of .autofs
+
+
+```shell
+vi /etc/auto.master.d/demo.autofs
+/shares /etc/auto.demo
+```
+
+* Create the mapping file
+
+```shell
+vim /etc/auto.demo
+work   -rw,sync   serverX:/shares/work
+```
+In the above case, the fully qualified mount point will be /shares/work
+Mount options start with "-"
+
+* Mapping file with wildcard maps
+```shell
+* -rw,sync serverX:/shares/&
+```
+
+
+###Kickstart Files
+
+* system-config-kickstart
 
 
 
